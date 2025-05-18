@@ -17,10 +17,18 @@ class MainScene extends Phaser.Scene {
     // Plain background color instead of tinted tile sprite
     this.cameras.main.setBackgroundColor(0x004400);
 
-    const grid = this.add
-      .grid(0, 0, width, height, 32, 32)
-      .setOrigin(0)
-      .setStrokeStyle(1, 0x00ff66);
+    this.grid = this.add
+      .tileSprite(0, 0, width, height, '__BLANK')
+      .setOrigin(0);
+
+    const g = this.make.graphics({ x: 0, y: 0, add: false });
+    g.lineStyle(1, 0x007733, 0.4);
+    for (let i = 0; i < width; i += 32) {
+      g.lineBetween(i, 0, i, height);
+      g.lineBetween(0, i, width, i);
+    }
+    g.generateTexture('__BLANK', width, height);
+    g.destroy();
 
     this.player = this.physics.add.sprite(width / 2, 560, 'player');
     this.player.setCollideWorldBounds(true);
@@ -35,6 +43,9 @@ class MainScene extends Phaser.Scene {
   }
 
   update() {
+
+    this.grid.tilePositionY -= 1;
+    this.grid.alpha = 0.4;
 
 
     const speed = 200;
