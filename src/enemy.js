@@ -27,6 +27,25 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite { // FINAL FIX: 
   preUpdate(time, delta) {
     super.preUpdate(time, delta);
 
+    // FIX: enemies fall correctly
+    const { width, height } = this.scene.scale;
+    // ensure constant downward movement
+    this.body.setVelocityY(this.speed);
+
+    const halfW = this.displayWidth / 2;
+    // bounce off side edges while falling
+    if (this.x <= halfW && this.body.velocity.x < 0) {
+      this.body.setVelocityX(Math.abs(this.body.velocity.x));
+    } else if (this.x >= width - halfW && this.body.velocity.x > 0) {
+      this.body.setVelocityX(-Math.abs(this.body.velocity.x));
+    }
+
+    // destroy once completely off screen bottom
+    if (this.y - this.displayHeight / 2 > height) {
+      this.destroy();
+      return;
+    }
+
     if (this.type === 'zigzag') {
       this.zigTimer += delta;
       if (this.zigTimer >= 500) {
