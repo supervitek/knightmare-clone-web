@@ -8,11 +8,15 @@ class MainScene extends Phaser.Scene {
   }
 
   preload() {
-    // Placeholder assets; replace with your own
-    this.load.image('player', 'assets/white.png');
-    this.load.image('bullet', 'assets/white.png');
-    this.load.image('enemy', 'assets/white.png');
-    this.load.image('power', 'assets/white.png');
+    // Generate 1x1 textures directly in code to avoid missing files
+    const g = this.make.graphics({ x: 0, y: 0, add: false });
+    g.fillStyle(0xffffff);
+    g.fillRect(0, 0, 1, 1);
+    g.generateTexture('player', 1, 1);
+    g.generateTexture('bullet', 1, 1);
+    g.generateTexture('enemy', 1, 1);
+    g.generateTexture('power', 1, 1);
+    g.destroy();
   }
 
   create() {

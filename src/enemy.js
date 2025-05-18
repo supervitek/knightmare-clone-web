@@ -4,7 +4,7 @@ const ENEMY_DATA = {
   tank: { size: 48, color: 0xcc0000, hp: 3, speed: 60 },
 };
 
-export default class Enemy extends Phaser.GameObjects.Rectangle {
+export default class Enemy extends Phaser.GameObjects.Rectangle { // FIX: crash – rectangle has no preUpdate
   constructor(scene, type = 'grunt', x = 0, y = 0) {
     const data = ENEMY_DATA[type] || ENEMY_DATA.grunt;
     super(scene, x, y, data.size, data.size, data.color);
