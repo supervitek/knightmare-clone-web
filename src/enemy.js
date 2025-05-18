@@ -1,9 +1,8 @@
-export default class Enemy extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, texture = 'enemy') {
-    super(scene, x, y, texture);
+export default class Enemy extends Phaser.GameObjects.Rectangle {
+  constructor(scene, x, y, size = 32, color = 0xff0000) {
+    super(scene, x, y, size, size, color);
     scene.add.existing(this);
     scene.physics.add.existing(this);
-    this.setTint(0xff0000);
-    this.setVelocityY(100);
+    this.body.setVelocityY(100);
   }
 }
