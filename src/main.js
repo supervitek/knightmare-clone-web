@@ -50,8 +50,17 @@ class MainScene extends Phaser.Scene {
     }
 
     if (Phaser.Input.Keyboard.JustDown(this.cursors.space)) {
-      const bullet = this.bullets.create(this.player.x, this.player.y - 20, 'bullet');
+      const bullet = this.bullets.create(
+        this.player.x,
+        this.player.y - 20,
+        'bullet'
+      );
       bullet.setVelocityY(-300);
+
+      const bWidth = this.player.displayWidth * 0.3;
+      const bHeight = this.player.displayHeight * 0.3;
+      bullet.setDisplaySize(bWidth, bHeight);
+      bullet.body.setSize(bWidth, bHeight);
     }
   }
 }
