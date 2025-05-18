@@ -1,4 +1,5 @@
-import Enemy from './enemy.js';
+const ENEMY_INTERVAL = 1000;
+const ENEMY_SPEED = 100;
 
 class MainScene extends Phaser.Scene {
   constructor() {
@@ -35,17 +36,23 @@ class MainScene extends Phaser.Scene {
 
     this.cursors = this.input.keyboard.createCursorKeys();
     this.bullets = this.physics.add.group();
-    this.time.addEvent({
-      delay: 1000,
-      callback: () => new Enemy(this, Phaser.Math.Between(0, width), 0),
-      loop: true,
-    });
+    this.enemies = this.physics.add.group();
+    this.lastEnemySpawn = 0;
   }
 
-  update() {
+  update(time) {
 
     this.grid.tilePositionY -= 1;
     this.grid.alpha = 0.4;
+    const WIDTH = this.scale.width;
+    if (time > this.lastEnemySpawn + ENEMY_INTERVAL) {
+      const x = Phaser.Math.Between(32, WIDTH - 32);
+      const enemy = this.add.rectangle(x, -32, 32, 32, 0xff0000);
+      this.physics.add.existing(enemy);
+      enemy.body.setVelocityY(ENEMY_SPEED);
+      this.enemies.add(enemy);
+      this.lastEnemySpawn = time;
+    }
 
 
     const speed = 200;
