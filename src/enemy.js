@@ -3,7 +3,7 @@ export default class Enemy extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, texture);
     scene.add.existing(this);
     scene.physics.add.existing(this);
-    this.setTint(0xff3333);
+    this.setTint(0xff0000);
     this.setVelocityY(100);
   }
 }
