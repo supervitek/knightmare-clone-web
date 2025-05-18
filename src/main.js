@@ -15,7 +15,10 @@ class MainScene extends Phaser.Scene {
 
   create() {
     const { width, height } = this.scale;
-    this.background = this.add.tileSprite(0, 0, width, height, 'bg').setOrigin(0, 0);
+    this.background = this.add
+      .tileSprite(0, 0, width, height, 'bg')
+      .setOrigin(0, 0)
+      .setTint(0x101010);
 
     this.player = this.physics.add.sprite(width / 2, 560, 'player');
     this.player.setCollideWorldBounds(true);
