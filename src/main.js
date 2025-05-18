@@ -9,13 +9,15 @@ class MainScene extends Phaser.Scene {
 
   preload() {
     // Generate 1x1 textures directly in code to avoid missing files
+    // FIX: power-ups & collision timing
+    this.load.image('power', 'assets/power.png');
+
     const g = this.make.graphics({ x: 0, y: 0, add: false });
     g.fillStyle(0xffffff);
     g.fillRect(0, 0, 1, 1);
     g.generateTexture('player', 1, 1);
     g.generateTexture('bullet', 1, 1);
     g.generateTexture('enemy', 1, 1);
-    g.generateTexture('power', 1, 1);
     g.destroy();
   }
 
@@ -45,7 +47,7 @@ class MainScene extends Phaser.Scene {
     this.bullets = this.physics.add.group();
     this.enemies = this.physics.add.group();
     this.enemyBullets = this.physics.add.group();
-    this.powerups = this.physics.add.group();
+    this.powerUps = this.physics.add.group(); // FIX: power-ups & collision timing
 
     this.score = 0;
     this.lives = 3;
@@ -63,7 +65,7 @@ class MainScene extends Phaser.Scene {
     this.physics.add.overlap(this.player, this.enemies, this.onPlayerHit, undefined, this);
     this.physics.add.overlap(this.player, this.enemyBullets, this.onPlayerHit, undefined, this);
     this.physics.add.overlap(this.bullets, this.enemies, this.onBulletHit, undefined, this);
-    this.physics.add.overlap(this.player, this.powerups, this.onPowerup, undefined, this);
+    this.physics.add.overlap(this.player, this.powerUps, this.onPowerup, undefined, this); // FIX: power-ups & collision timing
   }
 
   update(time) {
@@ -121,10 +123,9 @@ class MainScene extends Phaser.Scene {
     const { width } = this.scale;
     const x = Phaser.Math.Between(32, width - 32);
     const p = this.physics.add.sprite(x, 0, 'power');
-    p.setTint(0xffff00);
-    p.setDisplaySize(16, 16);
-    p.body.setVelocityY(80);
-    this.powerups.add(p);
+    p.setDisplaySize(32, 32);
+    p.body.setVelocityY(150);
+    this.powerUps.add(p); // FIX: power-ups & collision timing
   }
 
   onPlayerHit(player, obj) {
@@ -141,19 +142,20 @@ class MainScene extends Phaser.Scene {
   }
 
   onBulletHit(bullet, enemy) {
-    bullet.destroy();
-    enemy.hp -= 1;
-    if (enemy.hp <= 0) {
-      enemy.destroy();
-      this.score += 10;
-      this.scoreText.setText(`Score: ${this.score.toString().padStart(6, '0')}`);
+    // FIX: power-ups & collision timing
+    if (bullet.y >= enemy.y + enemy.height * 0.5) {
+      return;
     }
+    this.score += 10;
+    this.scoreText.setText(`Score: ${this.score.toString().padStart(6, '0')}`);
+    bullet.destroy();
+    enemy.destroy();
   }
 
   onPowerup(player, power) {
+    // FIX: power-ups & collision timing
     power.destroy();
-    this.weaponIndex = (this.weaponIndex + 1) % WEAPONS.length;
-    this.weaponText.setText(`Weapon: ${WEAPONS[this.weaponIndex]}`);
+    this.weaponText.setText('Weapon: Power');
   }
 
   fireWeapon() {
