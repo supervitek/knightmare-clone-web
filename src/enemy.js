@@ -4,12 +4,14 @@ const ENEMY_DATA = {
   tank: { size: 48, color: 0xcc0000, hp: 3, speed: 60 },
 };
 
-export default class Enemy extends Phaser.GameObjects.Rectangle { // FIX: crash – rectangle has no preUpdate
+export default class Enemy extends Phaser.Physics.Arcade.Sprite { // FINAL FIX: enemy preUpdate crash
   constructor(scene, type = 'grunt', x = 0, y = 0) {
     const data = ENEMY_DATA[type] || ENEMY_DATA.grunt;
-    super(scene, x, y, data.size, data.size, data.color);
+    super(scene, x, y, 'enemy');
     scene.add.existing(this);
     scene.physics.add.existing(this);
+    this.setDisplaySize(data.size, data.size);
+    this.setTint(data.color);
 
     this.scene = scene;
     this.type = type;
