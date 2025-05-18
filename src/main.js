@@ -10,16 +10,12 @@ class MainScene extends Phaser.Scene {
     this.load.image('player', 'assets/white.png');
     this.load.image('bullet', 'assets/white.png');
     this.load.image('enemy', 'assets/white.png');
-    this.load.image('bg', 'assets/white.png');
   }
 
   create() {
     const { width, height } = this.scale;
-    this.cameras.main.setBackgroundColor(0x003300);
-    this.background = this.add
-      .tileSprite(0, 0, width, height, 'bg')
-      .setOrigin(0, 0)
-      .setTint(0x003300);
+    // Plain background color instead of tinted tile sprite
+    this.cameras.main.setBackgroundColor(0x004400);
 
     const grid = this.add
       .grid(0, 0, width, height, 32, 32)
@@ -39,7 +35,7 @@ class MainScene extends Phaser.Scene {
   }
 
   update() {
-    this.background.tilePositionY -= 2;
+
 
     const speed = 200;
     if (this.cursors.left.isDown) {
