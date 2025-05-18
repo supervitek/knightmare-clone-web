@@ -10,7 +10,7 @@ class MainScene extends Phaser.Scene {
   preload() {
     // Generate 1x1 textures directly in code to avoid missing files
     // FIX: power-ups & collision timing
-    this.load.image('power', 'assets/power.png');
+    // Generate power-up texture in code as assets/power.png is empty
 
     const g = this.make.graphics({ x: 0, y: 0, add: false });
     g.fillStyle(0xffffff);
@@ -18,6 +18,9 @@ class MainScene extends Phaser.Scene {
     g.generateTexture('player', 1, 1);
     g.generateTexture('bullet', 1, 1);
     g.generateTexture('enemy', 1, 1);
+    g.fillStyle(0xffff00);
+    g.fillRect(0, 0, 1, 1);
+    g.generateTexture('power', 1, 1);
     g.destroy();
   }
 
