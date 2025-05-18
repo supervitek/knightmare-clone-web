@@ -15,10 +15,11 @@ class MainScene extends Phaser.Scene {
 
   create() {
     const { width, height } = this.scale;
+    this.cameras.main.setBackgroundColor(0x003300);
     this.background = this.add
       .tileSprite(0, 0, width, height, 'bg')
       .setOrigin(0, 0)
-      .setTint(0x004400);
+      .setTint(0x003300);
 
     const grid = this.add
       .grid(0, 0, width, height, 32, 32)
